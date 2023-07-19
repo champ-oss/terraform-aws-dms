@@ -83,12 +83,12 @@ resource "aws_dms_replication_instance" "this" {
 }
 
 module "this" {
-  source             = "../../"
-  replication_task_id = "dms-test"
+  source                   = "../../"
+  replication_task_id      = "dms-test"
   replication_instance_arn = aws_dms_replication_instance.this.replication_instance_arn
-  source_endpoint_arn = aws_dms_endpoint.source.endpoint_arn
-  target_endpoint_arn = aws_dms_endpoint.target.endpoint_arn
-  destination_schema_name = "dms-test"
+  source_endpoint_arn      = aws_dms_endpoint.source.endpoint_arn
+  target_endpoint_arn      = aws_dms_endpoint.target.endpoint_arn
+  destination_schema_name  = "dms-test"
   exclude_tables = [
     "test1_%",
     "test2_%"
