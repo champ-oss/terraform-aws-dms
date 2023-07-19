@@ -1,4 +1,4 @@
-# terraform-module-template
+# terraform-aws-dms
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
