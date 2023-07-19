@@ -11,6 +11,7 @@ variable "replication_task_id" {
 
 variable "migration_type" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dms_replication_task.html#migration_type"
+  type        = string
   default     = "full-load"
 }
 
@@ -57,4 +58,10 @@ variable "tags" {
   description = "Map of tags to assign to resources"
   type        = map(string)
   default     = {}
+}
+
+variable "target_table_prep_mode" {
+  description = "https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TaskSettings.FullLoad.html"
+  type        = string
+  default     = "DROP_AND_CREATE"
 }

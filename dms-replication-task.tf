@@ -75,7 +75,7 @@ resource "aws_dms_replication_task" "this" {
         "ParallelApplyQueuesPerThread" : 0
       },
       "FullLoadSettings" : {
-        "TargetTablePrepMode" : "DROP_AND_CREATE",
+        "TargetTablePrepMode" : var.target_table_prep_mode,
         "CreatePkAfterFullLoad" : false,
         "StopTaskCachedChangesApplied" : true,
         "StopTaskCachedChangesNotApplied" : false,
