@@ -8,6 +8,6 @@ REPLICATION_TASK_ARN = os.getenv('REPLICATION_TASK_ARN')
 def lambda_handler(_, __):
     response = DMS.start_replication_task(
         ReplicationTaskArn=REPLICATION_TASK_ARN,
-        StartReplicationTaskType='start-replication',
+        StartReplicationTaskType='reload-target',
     )
     print(response)
