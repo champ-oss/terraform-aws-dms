@@ -51,7 +51,7 @@ variable "exclude_tables" {
 variable "destination_schema_name" {
   description = "Name of the schema to write in the destination"
   type        = string
-  default     = "this"
+  default     = null
 }
 
 variable "tags" {

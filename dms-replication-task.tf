@@ -1,4 +1,5 @@
 locals {
+  destination_schema_name = var.destination_schema_name == null ? var.replication_task_id : var.destination_schema_name
   exclude_rules = [
     for tbl in toset(var.exclude_tables) : {
       rule-type = "selection",
@@ -47,7 +48,7 @@ resource "aws_dms_replication_task" "this" {
               "schema-name" = var.source_schema_name
             },
             rule-action = "rename",
-            value       = var.destination_schema_name,
+            value       = local.destination_schema_name,
             old-value   = null
           },
       ])

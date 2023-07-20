@@ -88,7 +88,6 @@ module "this" {
   replication_instance_arn = aws_dms_replication_instance.this.replication_instance_arn
   source_endpoint_arn      = aws_dms_endpoint.source.endpoint_arn
   target_endpoint_arn      = aws_dms_endpoint.target.endpoint_arn
-  destination_schema_name  = "dms-test"
   exclude_tables = [
     "test1_%",
     "test2_%"
