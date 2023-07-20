@@ -65,3 +65,15 @@ variable "target_table_prep_mode" {
   type        = string
   default     = "DROP_AND_CREATE"
 }
+
+variable "enable_schedule" {
+  description = "Run the replication task on a scheduled cron interval"
+  type        = bool
+  default     = true
+}
+
+variable "schedule" {
+  description = "Cron schedule for the replication task"
+  type        = string
+  default     = "cron(0 9 * * ? *)"
+}
