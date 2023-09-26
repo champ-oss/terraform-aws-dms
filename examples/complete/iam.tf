@@ -9,11 +9,6 @@ data "aws_iam_policy_document" "dms_assume_role" {
   }
 }
 
-import {
-  to = aws_iam_role.dms_cloudwatch_logs_role
-  id = "dms-cloudwatch-logs-role"
-}
-
 resource "aws_iam_role" "dms_cloudwatch_logs_role" {
   assume_role_policy = data.aws_iam_policy_document.dms_assume_role.json
   name               = "dms-cloudwatch-logs-role"
@@ -22,11 +17,6 @@ resource "aws_iam_role" "dms_cloudwatch_logs_role" {
 resource "aws_iam_role_policy_attachment" "amazon_dms_cloudwatch_logs_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonDMSCloudWatchLogsRole"
   role       = aws_iam_role.dms_cloudwatch_logs_role.name
-}
-
-import {
-  to = aws_iam_role.dms_vpc_role
-  id = "dms-vpc-role"
 }
 
 resource "aws_iam_role" "dms_vpc_role" {
