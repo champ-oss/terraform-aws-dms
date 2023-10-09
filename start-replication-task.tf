@@ -8,7 +8,7 @@ data "archive_file" "start_replication_task" {
 
 module "this" {
   count                    = var.enable_schedule ? 1 : 0
-  source                   = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.128-ed7eaf4"
+  source                   = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.129-a9ea64d"
   git                      = var.git
   name                     = "${var.replication_task_id}-start"
   tags                     = merge(local.tags, var.tags)
