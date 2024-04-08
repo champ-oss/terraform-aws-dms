@@ -86,6 +86,7 @@ resource "aws_dms_replication_task" "this" {
       },
       "Logging" : {
         "EnableLogging" : true,
+        "EnableLogContext" : false,
         "LogComponents" : [
           {
             "Id" : "TRANSFORMATION",
@@ -168,6 +169,7 @@ resource "aws_dms_replication_task" "this" {
       "ControlTablesSettings" : {
         "ControlSchema" : "",
         "HistoryTimeslotInMinutes" : 5,
+        "historyTimeslotInMinutes" : 5,
         "HistoryTableEnabled" : false,
         "SuspendedTablesTableEnabled" : false,
         "StatusTableEnabled" : false,
