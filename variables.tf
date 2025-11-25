@@ -77,3 +77,21 @@ variable "schedule" {
   type        = string
   default     = "cron(0 9 * * ? *)"
 }
+
+variable "table_mappings" {
+  description = "JSON string for DMS table mappings (selection + transformation rules)"
+  type        = string
+  default     = null
+}
+
+variable "replace_default_table_mappings" {
+  description = "If true, ignore module default table_mappings and uses user-provided table_mappings only"
+  type        = bool
+  default     = false
+}
+
+variable "replication_task_settings" {
+  description = "JSON string for DMS replication task settings"
+  type        = string
+  default     = null
+}

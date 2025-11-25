@@ -1,5 +1,6 @@
 locals {
   destination_schema_name = var.destination_schema_name == null ? var.replication_task_id : var.destination_schema_name
+
   exclude_rules = [
     for tbl in toset(var.exclude_tables) : {
       rule-type = "selection",
@@ -13,18 +14,8 @@ locals {
       filters     = []
     }
   ]
-}
-
-resource "aws_dms_replication_task" "this" {
-  replication_task_id      = var.replication_task_id
-  migration_type           = var.migration_type
-  replication_instance_arn = var.replication_instance_arn
-  source_endpoint_arn      = var.source_endpoint_arn
-  target_endpoint_arn      = var.target_endpoint_arn
-  start_replication_task   = var.start_replication_task
-  tags                     = merge(local.tags, var.tags)
-
-  table_mappings = jsonencode(
+  
+  default_table_mappings = jsonencode(
     {
       "rules" : concat(local.exclude_rules,
         [
@@ -54,8 +45,26 @@ resource "aws_dms_replication_task" "this" {
       ])
     }
   )
+  
+  default_table_mappings_decoded  = jsondecode(local.default_table_mappings)
+  override_table_mappings_decoded = var.table_mappings == null || var.table_mappings == "" ? {} : jsondecode(var.table_mappings)
 
-  replication_task_settings = jsonencode(
+  effective_table_mappings = jsonencode(
+    var.replace_default_table_mappings
+      ? {
+          # Use user rules only
+          rules = lookup(local.override_table_mappings_decoded, "rules", [])
+        }
+      : {
+          # Use default rules and add user rules 
+          rules = concat(
+            lookup(local.default_table_mappings_decoded,  "rules", []),
+            lookup(local.override_table_mappings_decoded, "rules", [])
+          )
+        }
+  )
+
+  default_replication_task_settings = jsonencode(
     {
       "TargetMetadata" : {
         "TargetSchema" : "",
@@ -228,5 +237,28 @@ resource "aws_dms_replication_task" "this" {
       "FailTaskWhenCleanTaskResourceFailed" : false,
       "TTSettings" : null
     }
+  )  
+  
+  merged_replication_task_settings = jsonencode(
+    merge(
+      jsondecode(local.default_replication_task_settings),
+      var.replication_task_settings == null ? {} : jsondecode(var.replication_task_settings)
+    )
+  )   
+  
+}
+
+resource "aws_dms_replication_task" "this" {
+  replication_task_id      = var.replication_task_id
+  migration_type           = var.migration_type
+  replication_instance_arn = var.replication_instance_arn
+  source_endpoint_arn      = var.source_endpoint_arn
+  target_endpoint_arn      = var.target_endpoint_arn
+  start_replication_task   = var.start_replication_task
+  tags                     = merge(local.tags, var.tags)
+ 
+  table_mappings = effective_table_mappings
+  
+  replication_task_settings = local.merged_replication_task_settings
   )
 }
